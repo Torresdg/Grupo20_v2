@@ -13,6 +13,7 @@
   </head>
   <body>
   <!-- Container MENU-->
+  <center>
   <div class="menu-container" id="menu-container">
       <header class="site-header">
               <div id="main-header" class="main-header header-sticky">
@@ -38,45 +39,112 @@
 <br>
 <br>
 <br>
+<!-- Formulario de contacto -->
+<h1>CONTACTANOS</h1>
+<div id="contacto-form">Para contactarse con nosotros complete el siguiente formulario:</div>
+<div id="contacto-camposobliga">* campos obligatorios</div>
+<br>
+<form id="contactoForm">
+    <div>*Nombre</div>
+    <div>
+        <input name="Nombre" type="text" id="nombre" class="contactform" size="42" style="width:50%">
+        <div class="error" id="errorNombre"></div>
+    </div>
+ 
+    <div>*Email</div>
+    <div>
+        <input name="email" type="email" id="email" class="contactform" size="42" style="width:50%">
+        <div class="error" id="errorEmail"></div>
+    </div>
 
-    
-    <h1>CONTACTANOS </h1>
-    <div id="contacto-form">Para contactarse con nosotros complete el siguiente formulario:</div>
-     
-     <div id="contacto-camposobliga">* campos obligatorios</div>
-     
-     <br>
+    <div>*Telefono</div>
+    <div>
+        <input name="Telefono" type="tel" id="telefono" class="contactform" size="42" style="width:50%">
+        <div class="error" id="errorTelefono"></div>
+    </div>
+ 
+    <div>Consulta</div>
+    <div>
+        <textarea name="Consulta" cols="41" rows="12" id="consulta" class="contactform" style="width:50%; height:145px"></textarea>
+    </div>
+ 
+    <div>
+        <input name="accion" type="hidden" id="accion" value="enviar">
+    </div>
+ 
+    <div>
+        <input type="submit" name="Submit" value="Enviar" class="boton-formulario">
+    </div>
+</form>
 
-     <div id="contactonombre">*Nombre</div>
-     <div id="contactocampos">
-     <input name="Nombre" type="text" id="Name"  class="contactform" size="42" style="width:50%">
-     </div>
-     
-     <div id="contactonombre">*Email</div>
-     <div id="contactocampos">
-     <input name="email" type="email" id="Name"  class="contactform" size="42" style="width:50%">
-     </div>
+<script>
+    document.getElementById('contactoForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-     <div id="contactonombre">*Telefono</div>
-     <div id="contactocampos">
-     <input name="Telefono" type="tel" id="Name"  class="contactform" size="42" style="width:50%">
-     </div>
-     
-     <div id="contactonombre">Consulta</div>
-     <div id="contactocampos">
-     <textarea name="Consulta" cols="41" rows="12" id="textarea2"  class="contactform" style="width:50%; height:145px"></textarea>
-     </div> 
-     
-     <div id="contactocampos">
-     <input name="accion" type="hidden" id="accion" value="enviar">
-     </div>
-     
-     <div id="contactocampos">
-     <input type="submit" name="Submit" value="Enviar"  class="boton-formulario">
-     </div>
-     
- </form>
-</div>
+        // Obtención de valores de los campos
+        const nombre = document.getElementById('nombre').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const consulta = document.getElementById('consulta').value.trim();
+
+        //Campos validacion.
+        let valid = true;
+
+        if (nombre === '') {
+            document.getElementById('errorNombre').textContent = 'El nombre es obligatorio.';
+            valid = false;
+        } else {
+            document.getElementById('errorNombre').textContent = '';
+        }
+
+        if (email === '') {
+            document.getElementById('errorEmail').textContent = 'El email es obligatorio.';
+            valid = false;
+        } else if (!validateEmail(email)) {
+            document.getElementById('errorEmail').textContent = 'El email no es válido.';
+            valid = false;
+        } else {
+            document.getElementById('errorEmail').textContent = '';
+        }
+
+        if (telefono === '') {
+            document.getElementById('errorTelefono').textContent = 'El teléfono es obligatorio.';
+            valid = false;
+        } else {
+            document.getElementById('errorTelefono').textContent = '';
+        }
+
+        // Evalua si es válido, o no. Y si se puede enviar
+        if (valid) {
+           console.log('Formulario enviado');
+            console.log({ nombre, email, telefono, consulta });
+            // Ejemplo de envío con fetch
+            fetch('tu_url_de_envio', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre, email, telefono, consulta })
+            }).then(response => {
+                if (response.ok) {
+                    alert('Formulario enviado correctamente');
+                    // Limpiar el formulario
+                    document.getElementById('contactoForm').reset();
+                } else {
+                    alert('Error al enviar el formulario');
+                }
+            }).catch(error => {
+                alert('Error al enviar el formulario');
+                console.error('Error:', error);
+            });
+        }
+    });
+
+    function validateEmail(email) {
+        const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(String(email).toLowerCase());
+    }
+</script>
     
    
 <!-- comienzo de footer --> 
@@ -98,8 +166,8 @@
                <li class="plinks2">Zona CABA, ARGENTINA</li>
                <li><a href="mailto:info@vidasana.com.ar" class="links2">info@vidasana.com.ar</a></li><br>
                <li><a href="https://www.facebook.com" target="_blank" class="links"><img src="./img/logo-facebook-BN.png" width="40" height="40"></a>&nbsp;&nbsp;
-               <a href="https://www.youtube.com" target="_blank" class="links"><img src="./img/logo-youtube-BN.jpeg" width="40" height="40"></a>&nbsp;&nbsp;
-               <a href="https://www.instagram.com" target="_blank" class="links"><img src="./img/logo-instagram-BN.jpeg" width="40" height="40"></a></li>
+               <a href="https://www.youtube.com" target="_blank" class="links"><img src="./img/logo-youtube.png" width="40" height="40"></a>&nbsp;&nbsp;
+               <a href="https://www.instagram.com" target="_blank" class="links"><img src="./img/logo-instagram-BN.png" width="40" height="40"></a></li>
 			    </ul>
           </div>
           <div class="spacing"></div>
@@ -122,6 +190,7 @@
 	  </div>
     <div class="two spacing"></div>
   </footer>
+</center>
 <div>
 </body>
 </html>
